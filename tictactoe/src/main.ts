@@ -52,7 +52,9 @@ const gridSize = 3;
 const gameGrid = document.getElementById("grid-container")!;
 
 //Part 3 /2.
-const currentPlayer = document.getElementById("current-player") as Element;
+const currentPlayerElement = document.getElementById(
+  "current-player"
+) as Element;
 const resetButton = document.getElementById("reset-button");
 
 //initializing players
@@ -61,12 +63,19 @@ const players: Array<Player> = [
   { name: "Player2", symbol: "o", score: 0 },
 ];
 
-//initializing state
+//initializing state this is where we have the turns set to 0 as the default
 let turn = 0;
 let gameEndState = false; //when the game round is done by draw or a win
 console.log(turn);
 console.log(gameEndState);
-//currentPlayer.textContent = `The current player is: ${players[0].name}`; //initial state - player1 gets round 1
+
+//initial state - player1 gets round 1 --
+//also the string that we are rebdering on top of our grid that dispals the players whos turn it is,
+//and if a player won the game, or it was a draw -- a display message we interact with the user
+
+// this is where we are tracking the game from the point of initioal state, to the point when we reach the end state. Everything in between
+//CellState here refers to the type declared above, which is pointing at teh activities ....
+let gameState: Record<string, CellState> = {}; //this is the container to keep track of the game
 
 const winConditions = [
   ["0-0", "0-1", "0-2"],
@@ -102,8 +111,51 @@ function makeMyGrid() {
       // apply styling to each div - you need to spread them without the commas
       cell.classList.add(...gridCellStyling);
 
+      //attach ids to the cells
+
+      //generate IDs
+      const id = coordToId([row, col]);
+      cell.id = id;
+
+      // we initialize the cell state here, so it can be tracked here - also track eventListener for player symbols of "x" or "o"
+      gameState[id] = {
+        markedBy: null,
+        element: cell,
+      };
+
       //append the child to the DOM
       gameGrid.appendChild(cell);
+
+      //add eventListener to the cells
+      cell.addEventListener("click", (event) => {
+        if (!gameEndState) {
+          //need to know whos turn it is
+          const currentPlayer = players[turn];
+
+          //whichever player turn it is, add their symbol, to the "markedBy" key for each specific cell
+
+          const cellState = gameState[id];
+
+          const isMarked = Boolean(cellState.markedBy);
+
+          if (!isMarked) {
+            cellState.markedBy = currentPlayer.name;
+
+            //update the cell to render the symbol on the tictactoe
+
+            cell.innerHTML = `<div class = "flex justify-center items-center h-full"><p class="text-5xl">${currentPlayer.symbol}</p></div>`;
+
+            //here we have to bring our function for checking win condition
+
+            // go to the next turn and one can always wrap around
+            turn = (turn + 1) % players.length;
+
+            const nextPlayer = players[turn];
+
+            currentPlayerElement.textContent = `The current player is: ${nextPlayer}`;
+          }
+        }
+      });
     }
   }
 }
