@@ -32,8 +32,9 @@ function coordToId(coord: Coordinates): `${number}-${number}` {
 
 // taking ID and change them to coordinate
 
-function idToCoord(id:`${number}-${number}`): Coordinates {
-  const [row, col] = 
+function idToCoord(id: `${number}-${number}`): Coordinates {
+  const [row, col] = id.split("-");
+  return [parseInt(row), parseInt(col)];
 }
 
 ////// Part 1.
@@ -50,6 +51,43 @@ const gridSize = 3;
 // grab my grid container from the dom
 const gameGrid = document.getElementById("grid-container")!;
 
+//Part 3 /2.
+const currentPlayer = document.getElementById("current-player") as Element;
+const resetButton = document.getElementById("reset-button");
+
+//initializing players
+const players: Array<Player> = [
+  { name: "Player1", symbol: "x", score: 0 },
+  { name: "Player2", symbol: "o", score: 0 },
+];
+
+//initializing state
+let turn = 0;
+let gameEndState = false; //when the game round is done by draw or a win
+console.log(turn);
+console.log(gameEndState);
+//currentPlayer.textContent = `The current player is: ${players[0].name}`; //initial state - player1 gets round 1
+
+const winConditions = [
+  ["0-0", "0-1", "0-2"],
+  ["1-0", "1-1", "1-2"],
+  ["2-0", "2-1", "2-2"],
+  ["0-0", "1-0", "2-0"],
+  ["0-1", "1-1", "2-1"],
+  ["0-2", "1-2", "2-2"],
+  ["0-0", "1-1", "2-2"],
+  ["2-0", "1-1", "0-2"],
+];
+
+function checkingWinConditions() {
+  for (let i = 0; i < winConditions.length; i++) {
+    console.log(winConditions[i]);
+  }
+}
+
+checkingWinConditions();
+
+// Part 3 /2 END
 //dynamic gridStyling
 //const gridStyling = [`grid-cols-${gridSize}`];
 
