@@ -21,6 +21,16 @@
   .border-bottom {
     @apply border-b-2 border-solid border-slate-500;
   }
+
+  .winner-message {
+    position: relative;
+    bottom: 350px;
+    color: black;
+    font-size: xx-large;
+    background-color: yellow;
+    padding: 2rem;
+    border-radius: 2rem;
+  }
 }
 
 @layer utilities {

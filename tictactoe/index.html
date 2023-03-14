@@ -7,17 +7,21 @@
     <script defer type="module" src="/src/main.ts"></script>
     <title>TicTacToe</title>
   </head>
-  <body>
-    <h1 id="header" class="text-red-300 text-4xl text-center mt-5">
+  <body class="bg-blue-900">
+    <h1 id="header" class="text-white text-4xl text-center mt-5">
       Tic Tac Toe Game
     </h1>
     <div class="flex flex-col justify-center items-center">
       <p id="current-player" class="text-center"></p>
       <div
         id="grid-container"
-        class="grid grid-cols-3 w-[600px] h-[600px] border border-black"
+        class="grid grid-cols-3 w-[600px] h-[600px] rounded-md"
       ></div>
-      <button id="reset-button" class="bg-purple-400 p-2 rounded-md mt-4">
+      <div><p class="winner-target"></p></div>
+      <button
+        id="reset-button"
+        class="bg-white p-2 rounded-md mt-4 text-blue-900"
+      >
         reset
       </button>
     </div>

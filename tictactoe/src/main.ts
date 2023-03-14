@@ -46,7 +46,13 @@ function idToCoord(id: `${number}-${number}`): Coordinates {
 //once I create the element, I need to give it some styling
 // then I need to append it to the parent: in this case it is #grid-container
 
-const gridCellStyling = ["h-[200px]", "w-[200px]", "border", "border-black"];
+const gridCellStyling = [
+  "h-[200px]",
+  "w-[200px]",
+  "border-2",
+  "border-white",
+  "rounded-md",
+];
 const gridSize = 3;
 // grab my grid container from the dom
 const gameGrid = document.getElementById("grid-container")!;
@@ -69,6 +75,7 @@ let gameEndState = false; //when the game round is done by draw or a win
 console.log(turn);
 console.log(gameEndState);
 
+currentPlayerElement.textContent = `The current player is: ${players[0].name}`;
 //initial state - player1 gets round 1 --
 //also the string that we are rebdering on top of our grid that dispals the players whos turn it is,
 //and if a player won the game, or it was a draw -- a display message we interact with the user
@@ -162,13 +169,14 @@ function makeMyGrid() {
 
             //update the cell to render the symbol on the tictactoe
 
-            cell.innerHTML = `<div class = "flex justify-center items-center h-full"><p class="text-5xl">${currentPlayer.symbol}</p></div>`;
+            cell.innerHTML = `<div class = "flex justify-center items-center h-full"><p class="text-5xl text-white">${currentPlayer.symbol}</p></div>`;
 
             //here we have to bring our function for checking win condition
             const Gamewinner = didIwin();
 
             if (Gamewinner) {
               displayWinner();
+
               gameEndState = true;
               return;
             }
@@ -185,5 +193,22 @@ function makeMyGrid() {
   }
 }
 
+//function to reset everthing
+function resetGrid() {
+  while (gameGrid.lastChild) {
+    gameGrid.removeChild(gameGrid.lastChild);
+  }
+  gameEndState = false;
+  turn = 0;
+  gameState = {};
+  currentPlayerElement.textContent = `The current player is: ${players[0].name}`;
+
+  makeMyGrid();
+}
+
+resetButton?.addEventListener("click", resetGrid);
 makeMyGrid();
 //Problem with this code = hard to adjust --- jump to line 12
+
+//PlayerScore
+//Dynamically
