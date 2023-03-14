@@ -88,15 +88,34 @@ const winConditions = [
   ["2-0", "1-1", "0-2"],
 ];
 
-function checkingWinConditions() {
-  for (let i = 0; i < winConditions.length; i++) {
-    console.log(winConditions[i]);
+function didIwin() {
+  for (const winCondition of winConditions) {
+    const [cell1, cell2, cell3] = winCondition.map((id) => gameState[id]);
+
+    const winner =
+      cell1.markedBy != null &&
+      cell2.markedBy != null &&
+      cell3.markedBy != null &&
+      cell1.markedBy == cell2.markedBy &&
+      cell2.markedBy == cell3.markedBy &&
+      cell3.markedBy == cell1.markedBy;
+
+    if (winner) {
+      return true;
+    }
   }
 }
 
-checkingWinConditions();
+// create a simple function that displays : congratulatory winning message
+
+// you need to do something where currently we are displaying the current players turn
+
+function displayWinner() {
+  currentPlayerElement.textContent = `Congrats ${players[turn].name} won the game!`;
+}
 
 // Part 3 /2 END
+
 //dynamic gridStyling
 //const gridStyling = [`grid-cols-${gridSize}`];
 
@@ -146,13 +165,19 @@ function makeMyGrid() {
             cell.innerHTML = `<div class = "flex justify-center items-center h-full"><p class="text-5xl">${currentPlayer.symbol}</p></div>`;
 
             //here we have to bring our function for checking win condition
+            const Gamewinner = didIwin();
 
+            if (Gamewinner) {
+              displayWinner();
+              gameEndState = true;
+              return;
+            }
             // go to the next turn and one can always wrap around
             turn = (turn + 1) % players.length;
 
             const nextPlayer = players[turn];
 
-            currentPlayerElement.textContent = `The current player is: ${nextPlayer}`;
+            currentPlayerElement.textContent = `The current player is: ${nextPlayer.name}`;
           }
         }
       });
